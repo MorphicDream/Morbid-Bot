@@ -12,10 +12,11 @@ import java.util.Random;
 
 public class Main implements EventListener {
 
-    private static List<String> list = new ArrayList<>();
+    private static List<String> quotes = new ArrayList<>();
+    private static String nonRepeat;
 
-    public Main(){
-        list.addAll(Arrays.asList(
+    public Main() {
+        quotes.addAll(Arrays.asList(
                 "Without people there is no money",
                 "If everyone died, who would be left to mourn?",
                 "There can't be light without darkness",
@@ -26,8 +27,8 @@ public class Main implements EventListener {
                 "Hello darkness my old friend..."));
     }
 
-    public static void main(String[] args){
-        JDABuilder jdaBuilder = JDABuilder.createDefault("TOKEN GOES HERE");
+    public static void main(String[] args) {
+        JDABuilder jdaBuilder = JDABuilder.createDefault("TOKEN HERE");
         try {
             jdaBuilder.addEventListeners(new Main()).build();
         } catch (LoginException e) {
@@ -37,15 +38,26 @@ public class Main implements EventListener {
 
     @Override
     public void onEvent(@Nonnull GenericEvent genericEvent) {
-        if(genericEvent instanceof MessageReceivedEvent){
+        if (genericEvent instanceof MessageReceivedEvent) {
             MessageReceivedEvent event = (MessageReceivedEvent) genericEvent;
-            if(event.getMessage().getContentRaw().toLowerCase().contains("!morbid") && !event.getAuthor().isBot()){
-                event.getChannel().sendMessage(getRandomString()).submit();
+            if (event.getMessage().getContentRaw().toLowerCase().contains("!morbid") && !event.getAuthor().isBot()) {
+                String random = getRandomString();
+                if (random.equalsIgnoreCase(nonRepeat)) {
+                    List<String> repeatable = new ArrayList<>(quotes);
+                    repeatable.remove(random);
+                    random = getRandomString(repeatable);
+                }
+                event.getChannel().sendMessage(random).submit();
+                nonRepeat = random;
             }
         }
     }
 
-    private static String getRandomString(){
+    private static String getRandomString() {
+        return getRandomString(quotes);
+    }
+
+    private static String getRandomString(List<String> list) {
         Random rand = new Random();
         return list.get(rand.nextInt(list.size()));
     }
