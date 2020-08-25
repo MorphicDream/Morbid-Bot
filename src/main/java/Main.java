@@ -1,21 +1,20 @@
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Main implements EventListener {
 
     private static List<String> quotes = new ArrayList<>();
     private static String nonRepeat;
+    private static List<User> users = new ArrayList<>();
 
-    public Main() {
+    private Main() {
         quotes.addAll(Arrays.asList(
                 "Without people there is no money",
                 "If everyone died, who would be left to mourn?",
@@ -31,7 +30,7 @@ public class Main implements EventListener {
     }
 
     public static void main(String[] args) {
-        JDABuilder jdaBuilder = JDABuilder.createDefault("TOKEN HERE");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("NzQyMTMxNjY3NDAxMTc5Mjc2.XzBp-Q.T9K__PIWdbFuqYJMLYpzHYUzQOI");
         try {
             jdaBuilder.addEventListeners(new Main()).build();
         } catch (LoginException e) {
@@ -45,6 +44,10 @@ public class Main implements EventListener {
             MessageReceivedEvent event = (MessageReceivedEvent) genericEvent;
             if (event.getMessage().getContentRaw().toLowerCase().contains("!morbid") && !event.getAuthor().isBot()) {
                 String random = getRandomString();
+                if(users.contains(event.getMessage().getAuthor())){
+                    event.getChannel().sendMessage("Cooldown message").submit();
+                    return;
+                }
                 if (random.equalsIgnoreCase(nonRepeat)) {
                     List<String> repeatable = new ArrayList<>(quotes);
                     repeatable.remove(random);
@@ -52,6 +55,7 @@ public class Main implements EventListener {
                 }
                 event.getChannel().sendMessage(random).submit();
                 nonRepeat = random;
+                addUser(event.getMessage().getAuthor());
             }
         }
     }
@@ -64,4 +68,16 @@ public class Main implements EventListener {
         Random rand = new Random();
         return list.get(rand.nextInt(list.size()));
     }
+
+    private static void addUser(User user){
+        users.add(user);
+        CooldownTimer timer = new CooldownTimer(user, System.currentTimeMillis());
+        Timer time = new Timer();
+        time.schedule(timer, 20, 20);
+    }
+
+    static void removeUser(User user){
+        users.remove(user);
+    }
+
 }
