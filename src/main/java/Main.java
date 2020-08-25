@@ -24,7 +24,10 @@ public class Main implements EventListener {
                 "You only need one kidney to stay alive, which one is up to you",
                 "Never freeze eyeballs if you want to use them for anything",
                 "Hair and nails keep growing for a short time after death",
-                "Hello darkness my old friend..."));
+                "Hello darkness my old friend...",
+                "Death is something we all will share, in the end",
+                "Funerals are not for the dead, they are for the living",
+                "This is life, it will be over before you know it"));
     }
 
     public static void main(String[] args) {
