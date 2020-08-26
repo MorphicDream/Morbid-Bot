@@ -30,7 +30,7 @@ public class Main implements EventListener {
     }
 
     public static void main(String[] args) {
-        JDABuilder jdaBuilder = JDABuilder.createDefault("NzQyMTMxNjY3NDAxMTc5Mjc2.XzBp-Q.T9K__PIWdbFuqYJMLYpzHYUzQOI");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("TOKEN HERE");
         try {
             jdaBuilder.addEventListeners(new Main()).build();
         } catch (LoginException e) {
