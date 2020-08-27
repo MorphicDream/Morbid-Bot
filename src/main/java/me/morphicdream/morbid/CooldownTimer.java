@@ -1,3 +1,5 @@
+package me.morphicdream.morbid;
+
 import net.dv8tion.jda.api.entities.User;
 
 import java.util.TimerTask;
@@ -6,6 +8,7 @@ public class CooldownTimer extends TimerTask {
 
     private User user;
     private Long time;
+    private long timeout;
 
     CooldownTimer(User user, Long time){
         this.user = user;
@@ -18,7 +21,7 @@ public class CooldownTimer extends TimerTask {
 
     @Override
     public void run() {
-        long timeout = time + 10000;
+        timeout = time + 10000;
         if(System.currentTimeMillis() > timeout){
             Main.removeUser(getUser());
             this.cancel();
