@@ -6,9 +6,8 @@ import java.util.TimerTask;
 
 public class CooldownTimer extends TimerTask {
 
-    private User user;
-    private Long time;
-    private long timeout;
+    private final User user;
+    private final Long time;
 
     CooldownTimer(User user, Long time){
         this.user = user;
@@ -21,7 +20,7 @@ public class CooldownTimer extends TimerTask {
 
     @Override
     public void run() {
-        timeout = time + 10000;
+        long timeout = time + 10000;
         if(System.currentTimeMillis() > timeout){
             Main.removeUser(getUser());
             this.cancel();

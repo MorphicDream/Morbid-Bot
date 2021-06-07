@@ -13,10 +13,10 @@ import java.util.*;
 
 public class Main implements EventListener {
 
-    private static List<String> quotes = new ArrayList<>();
+    private static final List<String> quotes = new ArrayList<>();
     private static String nonRepeat;
-    private static List<User> users = new ArrayList<>();
-    private static String token = "TOKEN SHOULD GO HERE PLS";
+    private static final List<User> users = new ArrayList<>();
+    private static final String token = "DISCORD BOT TOKEN GOES HERE";
 
     private Main() {
         quotes.addAll(Arrays.asList(
@@ -33,7 +33,11 @@ public class Main implements EventListener {
                 "This is life, it will be over before you know it",
                 "In your last moments who will you think of?",
                 "Life is like a book, after a few pages it ends",
-                "Death is a comfort to the old and often a surprise to the young"));
+                "Death is a comfort to the old and often a surprise to the young",
+                "Without your skin, everything would fall out",
+                "The dark exists to hide the bodies",
+                "Love between two people ends when they are both dead",
+                "Depression is depressing"));
     }
 
     public static void main(String[] args) {
@@ -53,7 +57,7 @@ public class Main implements EventListener {
                 String random = getRandomString();
                 if(users.contains(event.getMessage().getAuthor())){
                     PrivateChannel privateChannel = event.getMessage().getAuthor().openPrivateChannel().complete();
-                    privateChannel.sendMessage("There is a cooldown for the morbid command of around 10 seconds").submit();
+                    privateChannel.sendMessage("There is a cool down for the morbid command of around 10 seconds").submit();
                     return;
                 }
                 if (random.equalsIgnoreCase(nonRepeat)) {
