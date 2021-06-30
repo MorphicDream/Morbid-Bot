@@ -1,11 +1,15 @@
 package me.morphicdream.morbid;
 
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
@@ -16,7 +20,7 @@ public class Main implements EventListener {
     private static final List<String> quotes = new ArrayList<>();
     private static String nonRepeat;
     private static final List<User> users = new ArrayList<>();
-    private static final String token = "DISCORD BOT TOKEN GOES HERE";
+    private static final String token = "TOKEN HERE PLS";
 
     private Main() {
         quotes.addAll(Arrays.asList(
@@ -37,13 +41,16 @@ public class Main implements EventListener {
                 "Without your skin, everything would fall out",
                 "The dark exists to hide the bodies",
                 "Love between two people ends when they are both dead",
-                "Depression is depressing"));
+                "Depression is depressing",
+                "During laser eye surgery you can smell your eyes burning",
+                "Most sitcom laugh tracks were recorded in the 1950's, I wonder how many of them are alive...",
+                "Bodies take between 24 and 48 hours to 'decompress' after death"));
     }
 
     public static void main(String[] args) {
         JDABuilder jdaBuilder = JDABuilder.createDefault(token);
         try {
-            jdaBuilder.addEventListeners(new Main()).build();
+            jdaBuilder.setActivity(Activity.watching("!morbid")).addEventListeners(new Main()).build();
         } catch (LoginException e) {
             e.printStackTrace();
         }
